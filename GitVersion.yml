@@ -16,7 +16,7 @@ branches:
       - develop
     tracks-release-branches: true
     is-release-branch: false
-    is-mainline: false
+    is-mainline: true
     pre-release-weight: 55000
 
   develop:
