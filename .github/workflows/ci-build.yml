@@ -50,7 +50,8 @@ jobs:
       # - name: Run Unit Tests
       #   run: vstest.console.exe "Path\To\Tests.dll"
 
-      - name: Preview GitVersion
+      - name: Display Calculated Version
         run: |
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
           echo "Branch: ${{ steps.gitversion.outputs.branchName }}"
