@@ -47,7 +47,9 @@ jobs:
 
       # Optional: Run Unit Tests
       - name: Run Unit Tests
-        run: vstest.console.exe "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll"
+        run: |
+          $vstestPath = (Get-ChildItem "C:\Program Files (x86)\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+          & $vstestPath "demoTool.Tests\bin\$env:Build_Configuration\demoTool.Tests.dll"
 
       - name: Display Calculated Version
         run: |
