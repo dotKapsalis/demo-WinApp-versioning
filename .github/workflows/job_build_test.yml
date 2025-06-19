@@ -55,7 +55,7 @@ jobs:
             exit 1
           }
 
-          & "$($vstestPath.FullName)" "demoTool.Tests\bin\$env:Build_Configuration\demoTool.Tests.dll"
+          & "$($vstestPath.FullName)" "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll"
 
       - name: Display Calculated Version
         run: |
