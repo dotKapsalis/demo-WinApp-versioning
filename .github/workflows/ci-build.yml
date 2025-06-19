@@ -41,10 +41,10 @@ jobs:
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
           echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
 
-      - name: Setup MSBuild.exe (2022)
+      - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v2
         with:
-          vs-version: '2022'
+          msbuild-architecture: x64
 
       - name: Restore NuGet Packages
         run: nuget restore $env:Solution_Name
