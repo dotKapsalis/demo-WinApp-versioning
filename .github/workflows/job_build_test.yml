@@ -1,0 +1,56 @@
+name: Build & Test
+
+on:
+  workflow_call:
+    inputs:
+      solution:
+        required: true
+        type: string
+      configuration:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build & Test (CI)
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: ${{ inputs.solution }}
+      Build_Configuration: ${{ inputs.configuration }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for GitVersion to work correctly
+
+      - name: Install GitVersion 5.x
+        uses: gittools/actions/gitversion/setup@v2.0.0
+        with:
+          versionSpec: '5.x' # Install the latest GitVersion 5.x
+
+      - name: Calculate GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v2.0.0
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: Restore NuGet Packages
+        run: nuget restore $env:Solution_Name
+
+      - name: Build Solution
+        run: msbuild $env:Solution_Name /p:Configuration=$env:Build_Configuration
+
+      # Optional: Run Unit Tests
+      - name: Run Unit Tests
+        run: vstest.console.exe "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll"
+
+      - name: Display Calculated Version
+        run: |
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+          echo "Branch: ${{ steps.gitversion.outputs.branchName }}"
