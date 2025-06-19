@@ -55,7 +55,27 @@ jobs:
             exit 1
           }
 
-          & "$($vstestPath.FullName)" "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll"
+          $testResultsDir = "TestResults"
+          New-Item -ItemType Directory -Force -Path $testResultsDir | Out-Null
+
+          & "$($vstestPath.FullName)" `
+            "demoTool.Tests\bin\$env:Build_Configuration\demoTool.Tests.dll" `
+            --logger:trx `
+            --resultsDirectory:$testResultsDir
+
+      - name: Upload Test Results (.trx)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults/*.trx
+
+      - name: Report Test Results
+        uses: dorny/test-reporter@v1
+        if: always() # run even if tests fail
+        with:
+          name: Unit Tests
+          path: TestResults/*.trx
+          reporter: dotnet-trx
 
       - name: Display Calculated Version
         run: |
