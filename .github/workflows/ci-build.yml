@@ -34,15 +34,12 @@ jobs:
       - name: Calculate GitVersion
         id: gitversion
         uses: gittools/actions/gitversion/execute@v2.0.0
-        with:
-          additionalArguments: '/showvariable SemVer'
 
       - name: Dump GitVersion outputs
         run: |
           echo "Branch: ${{ steps.gitversion.outputs.branchName }}"
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
           echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
-
 
       - name: Setup MSBuild.exe (2022)
         uses: microsoft/setup-msbuild@v2
