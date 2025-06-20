@@ -59,7 +59,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path $testResultsDir | Out-Null
 
           & "$($vstestPath.FullName)" `
-            "demoTool.Tests\bin\$env:Build_Configuration\demoTool.Tests.dll" `
+            "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
             --resultsDirectory:$testResultsDir
       #      --collect:"XPlat Code Coverage"
@@ -71,7 +71,7 @@ jobs:
       #     trx2junit TestResults\TestResults.trx
 
       # This is working
-      # - name: Publish Test Results Artifact
+      # - name: Upload Test Results Artifact
       #   uses: actions/upload-artifact@v4
       #   with:
       #     name: Test-Results
@@ -82,7 +82,7 @@ jobs:
         if: success() || failure()           # run this step even if previous step failed
         with:
           name: test-results                 # Name of the check run which will be created
-          path: TestResults/TestResults.trx  # Path to test results
+          path: TestResults/*.trx  # Path to test results
           reporter: dotnet-trx               # Format of test results
 
       # - name: Publish test results
