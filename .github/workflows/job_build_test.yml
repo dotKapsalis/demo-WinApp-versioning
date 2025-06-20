@@ -77,10 +77,16 @@ jobs:
       #     path: TestResults/TestResults.xml
       #     reporter: java-junit
 
-      - name: Publish Test Results as GitHub Annotations
-        uses: EnricoMi/publish-unit-test-result-action@v2
+      # - name: Publish Test Results as GitHub Annotations
+      #   uses: EnricoMi/publish-unit-test-result-action@v2
+      #   with:
+      #     files: TestResults/*.xml
+
+      - name: Publish Test Results to GitHub
+        uses: actions/upload-test-results@v1
         with:
-          files: TestResults/*.xml
+          files: TestResults.trx
+          format: vstest
 
       - name: Display Calculated Version
         run: |
