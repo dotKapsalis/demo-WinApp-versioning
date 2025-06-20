@@ -85,10 +85,6 @@ jobs:
           path: 'TestResults/*.trx'
           reporter: dotnet-trx
 
-      # - name: Publish Test Results as GitHub Annotations
-      #   uses: EnricoMi/publish-unit-test-result-action@v2
-      #   with:
-      #     files: TestResults/*.xml
 
       # - name: Publish Test Results to GitHub
       #   uses: actions/upload-test-results@v1
