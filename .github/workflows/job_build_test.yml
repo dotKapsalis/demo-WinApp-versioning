@@ -64,11 +64,11 @@ jobs:
             --resultsDirectory:$testResultsDir `
             --collect:"XPlat Code Coverage"
 
-      - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
-        run: |
-          dotnet tool install -g trx2junit
-          $env:Path += ";$env:USERPROFILE\.dotnet\tools"
-          trx2junit TestResults\TestResults.trx
+      # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
+      #   run: |
+      #     dotnet tool install -g trx2junit
+      #     $env:Path += ";$env:USERPROFILE\.dotnet\tools"
+      #     trx2junit TestResults\TestResults.trx
 
       # - name: Publish Test Results as Annotations
       #   uses: dorny/test-reporter@v1
@@ -77,16 +77,24 @@ jobs:
       #     path: TestResults/TestResults.xml
       #     reporter: java-junit
 
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: 'Test Results'
+          path: 'TestResults/*.trx'
+          reporter: dotnet-trx
+
       # - name: Publish Test Results as GitHub Annotations
       #   uses: EnricoMi/publish-unit-test-result-action@v2
       #   with:
       #     files: TestResults/*.xml
 
-      - name: Publish Test Results to GitHub
-        uses: actions/upload-test-results@v1
-        with:
-          files: TestResults.trx
-          format: vstest
+      # - name: Publish Test Results to GitHub
+      #   uses: actions/upload-test-results@v1
+      #   with:
+      #     files: TestResults.trx
+      #     format: vstest
 
       - name: Display Calculated Version
         run: |
