@@ -14,7 +14,7 @@ namespace demoTool.Tests
 
             int result = calculator.AddNumbers(2, 3);
 
-            Assert.AreEqual(5, result);
+            Assert.AreEqual(4, result);
         }
     }
 }
