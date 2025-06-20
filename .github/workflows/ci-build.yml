@@ -12,6 +12,11 @@ on:
       - master
       - release/**
 
+permissions:
+  contents: read
+#  actions: read
+  checks: write
+
 jobs:
   build:
     uses: ./.github/workflows/job_build_test.yml
