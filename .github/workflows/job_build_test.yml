@@ -10,6 +10,11 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+#  actions: read
+  checks: write
+
 jobs:
   build:
     name: Build & Test (CI)
@@ -61,8 +66,8 @@ jobs:
           & "$($vstestPath.FullName)" `
             "demoTool.Tests\bin\$env:Build_Configuration\demoTool.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
-            --resultsDirectory:$testResultsDir `
-            --collect:"XPlat Code Coverage"
+            --resultsDirectory:$testResultsDir
+      #      --collect:"XPlat Code Coverage"
 
       # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
       #   run: |
@@ -70,21 +75,27 @@ jobs:
       #     $env:Path += ";$env:USERPROFILE\.dotnet\tools"
       #     trx2junit TestResults\TestResults.trx
 
-      # - name: Publish Test Results as Annotations
-      #   uses: dorny/test-reporter@v1
+      # This is working
+      # - name: Publish Test Results Artifact
+      #   uses: actions/upload-artifact@v4
       #   with:
-      #     name: Unit Tests
-      #     path: TestResults/TestResults.xml
-      #     reporter: java-junit
+      #     name: Test-Results
+      #     path: TestResults.trx
 
-      - name: Publish test results
-        uses: dorny/test-reporter@v1
-        if: always()
+      - name: Publish Test Results Artifact
+        uses: dorny/test-reporter@v2
         with:
-          name: 'Test Results'
-          path: 'TestResults/*.trx'
+          name: test-results                 # Name of the check run which will be created
+          path: TestResults/TestResults.trx
           reporter: dotnet-trx
 
+      # - name: Publish test results
+      #   uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: 'Test-Results'
+      #     path: 'TestResults/*.trx'
+      #     reporter: dotnet-trx
 
       # - name: Publish Test Results to GitHub
       #   uses: actions/upload-test-results@v1
