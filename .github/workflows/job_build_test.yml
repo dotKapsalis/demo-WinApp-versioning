@@ -70,19 +70,19 @@ jobs:
       #     $env:Path += ";$env:USERPROFILE\.dotnet\tools"
       #     trx2junit TestResults\TestResults.trx
 
-      # This is working
-      # - name: Upload Test Results Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: Test-Results
-      #     path: TestResults.trx
+      # Upload test result files as artifacts, so they can be fetched by the reporting workflow
+      - name: Upload Test Results Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
 
-      - name: Publish Test Results Artifact
+      - name: Publish Test Results
         uses: dorny/test-reporter@v2
         if: success() || failure()           # run this step even if previous step failed
         with:
           name: test-results                 # Name of the check run which will be created
-          path: TestResults/*.trx  # Path to test results
+          path: TestResults/*.trx            # Path to test results
           reporter: dotnet-trx               # Format of test results
 
       # - name: Publish test results
