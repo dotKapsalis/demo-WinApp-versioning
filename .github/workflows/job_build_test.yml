@@ -67,7 +67,7 @@ jobs:
         run: |
           dotnet tool install -g trx2junit
           $env:Path += ";$env:USERPROFILE\.dotnet\tools"
-          trx2junit TestResults\TestResults.trx -o TestResults/TestResults.xml
+          trx2junit TestResults\TestResults.trx
 
       - name: Publish Test Results as Annotations
         uses: dorny/test-reporter@v1
