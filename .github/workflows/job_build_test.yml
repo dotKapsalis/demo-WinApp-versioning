@@ -59,7 +59,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path $testResultsDir | Out-Null
 
           & "$($vstestPath.FullName)" `
-            "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
+            "demoTool.Tests\bin\$env:Build_Configuration\net48\*.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
             --resultsDirectory:$testResultsDir
       #      --collect:"XPlat Code Coverage"
