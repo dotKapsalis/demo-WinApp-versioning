@@ -62,13 +62,25 @@ jobs:
             "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
             --resultsDirectory:$testResultsDir `
-            --collect:"XPlat Code Coverage"
+            --TestAdapterPath:. `
+            --settings:coverlet.runsettings
+      #      --collect:"XPlat Code Coverage"
 
       # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
       #   run: |
       #     dotnet tool install -g trx2junit
       #     $env:Path += ";$env:USERPROFILE\.dotnet\tools"
       #     trx2junit TestResults\TestResults.trx
+
+      # - name: Run Coverage Tests
+      #   run: |
+      #     $vstestPath = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+      #     dotnet tool install -g coverlet.console --version 6.0.0
+          
+      #     coverlet  "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
+      #       --target:$vstestPath `
+      #       --targetargs:"demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
+      #       --format:cobertura
 
       # Upload test result files as artifacts, so they can be fetched by the reporting workflow
       - name: Upload Test Results Artifacts
