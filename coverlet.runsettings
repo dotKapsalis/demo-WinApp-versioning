@@ -5,8 +5,13 @@
       <DataCollector friendlyName="Code Coverage">
         <Configuration>
           <Format>cobertura</Format>  <!-- or "opencover" -->
-          <Include>[demoTool.*]*</Include>
-          <Exclude>[demoTool.Tests]*</Exclude>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <ExcludeByFile>**/demoTool.Tests/**.cs,**/samples/**.cs</ExcludeByFile>
+          <SingleHit>false</SingleHit>
+          <UseSourceLink>false</UseSourceLink>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+          <SkipAutoProps>true</SkipAutoProps>
+          <DeterministicReport>true</DeterministicReport>
         </Configuration>
       </DataCollector>
     </DataCollectors>
