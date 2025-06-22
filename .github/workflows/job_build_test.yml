@@ -64,7 +64,7 @@ jobs:
             --resultsDirectory:$testResultsDir `
             --TestAdapterPath:. `
             --settings:coverlet.runsettings
-      #      --collect:"XPlat Code Coverage"
+
 
       # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
       #   run: |
@@ -81,6 +81,13 @@ jobs:
       #       --target:$vstestPath `
       #       --targetargs:"demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
       #       --format:cobertura
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            demoTool.Tests/TestResults/**/*.cobertura.xml
 
       # Upload test result files as artifacts, so they can be fetched by the reporting workflow
       - name: Upload Test Results Artifacts
