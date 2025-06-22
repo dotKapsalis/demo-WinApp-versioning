@@ -61,7 +61,7 @@ jobs:
           & "$($vstestPath.FullName)" `
             "demoTool.Tests\bin\$env:Build_Configuration\net48\*.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
-            --resultsDirectory:$testResultsDir
+            --resultsDirectory:$testResultsDir `
             --collect:"XPlat Code Coverage"
 
       # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
