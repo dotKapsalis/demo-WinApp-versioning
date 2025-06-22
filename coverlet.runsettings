@@ -6,7 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>  <!-- or "opencover" -->
           <Include>[demoTool.*]*</Include>
-          <Exclude>[*.Tests]*</Exclude>
+          <Exclude>[demoTool.Tests]*</Exclude>
         </Configuration>
       </DataCollector>
     </DataCollectors>
