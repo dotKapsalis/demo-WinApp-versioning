@@ -65,47 +65,31 @@ jobs:
             --TestAdapterPath:. `
             --settings:coverlet.runsettings
 
-
-      # - name: Convert TRX to JUnit  # This will generate a file: TestResults\TestResults.xml
-      #   run: |
-      #     dotnet tool install -g trx2junit
-      #     $env:Path += ";$env:USERPROFILE\.dotnet\tools"
-      #     trx2junit TestResults\TestResults.trx
-
-      # - name: Run Coverage Tests
-      #   run: |
-      #     $vstestPath = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe -ErrorAction SilentlyContinue | Select-Object -First 1
-      #     dotnet tool install -g coverlet.console --version 6.0.0
-          
-      #     coverlet  "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
-      #       --target:$vstestPath `
-      #       --targetargs:"demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
-      #       --format:cobertura
-
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
+      # Install ReportGenerator and Generate HTML Report
       - name: Generate HTML Report
         run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator `
           -reports:TestResults/**/*.cobertura.xml `
           -targetdir:coveragereport `
           -reporttypes:Html
-      
-      - name: Upload HTML Report
+
+      # Upload Coverage HTML Report
+      - name: Upload Coverage HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html-report
           path: coveragereport
 
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: |
-            TestResults/*/*.cobertura.xml
+      # Optional upload the cobertura.xml
+      # - name: Upload Coverage Report
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: coverage-report
+      #     path: |
+      #       TestResults/**/*.cobertura.xml
 
-      # Upload test result files as artifacts, so they can be fetched by the reporting workflow
+      # Upload UnitTest Result files as artifacts, so they can be fetched by the reporting workflow
       - name: Upload UnitTest Results Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -120,20 +104,8 @@ jobs:
           path: TestResults/*.trx            # Path to test results
           reporter: dotnet-trx               # Format of test results
 
-      # - name: Publish test results
-      #   uses: dorny/test-reporter@v1
-      #   if: always()
-      #   with:
-      #     name: 'Test-Results'
-      #     path: 'TestResults/*.trx'
-      #     reporter: dotnet-trx
-
-      # - name: Publish Test Results to GitHub
-      #   uses: actions/upload-test-results@v1
-      #   with:
-      #     files: TestResults.trx
-      #     format: vstest
-
+      
+      # Display the Calculated Version
       - name: Display Calculated Version
         run: |
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
