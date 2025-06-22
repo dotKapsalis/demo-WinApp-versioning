@@ -65,6 +65,22 @@ jobs:
             --TestAdapterPath:. `
             --settings:coverlet.runsettings
 
+      # Upload UnitTest Result files as artifacts, so they can be fetched by the reporting workflow
+      - name: Upload UnitTest Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: unittest-results
+          path: TestResults/*.trx
+
+      - name: Publish UnitTest Results
+        uses: dorny/test-reporter@v2
+        if: success() || failure()           # run this step even if previous step failed
+        with:
+          name: test-results                 # Name of the check run which will be created
+          path: TestResults/*.trx            # Path to test results
+          reporter: dotnet-trx               # Format of test results
+
+
       # Install ReportGenerator and Generate HTML Report
       - name: Generate Coverage HTML Report
         run: |
@@ -89,22 +105,6 @@ jobs:
       #     path: |
       #       TestResults/**/*.cobertura.xml
 
-      # Upload UnitTest Result files as artifacts, so they can be fetched by the reporting workflow
-      - name: Upload UnitTest Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: unittest-results
-          path: TestResults/*.trx
-
-      - name: Publish UnitTest Results
-        uses: dorny/test-reporter@v2
-        if: success() || failure()           # run this step even if previous step failed
-        with:
-          name: test-results                 # Name of the check run which will be created
-          path: TestResults/*.trx            # Path to test results
-          reporter: dotnet-trx               # Format of test results
-
-      
       # Display the Calculated Version
       - name: Display Calculated Version
         run: |
