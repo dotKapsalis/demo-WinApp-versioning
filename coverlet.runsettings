@@ -6,7 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>  <!-- or "opencover" -->
           <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
-          <ExcludeByFile>**/demoTool.Tests/**.cs,**/samples/**.cs</ExcludeByFile>
+          <ExcludeByFile>**/demoTool.Tests/**.cs,**/samples/**.cs,**/*.Designer.cs</ExcludeByFile>
           <SingleHit>false</SingleHit>
           <UseSourceLink>false</UseSourceLink>
           <IncludeTestAssembly>false</IncludeTestAssembly>
