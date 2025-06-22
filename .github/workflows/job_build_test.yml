@@ -60,7 +60,7 @@ jobs:
 
           & "$($vstestPath.FullName)" `
             "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
-            --logger:"trx;LogFileName=TestResults.trx" `
+            --logger:"trx;LogFileName=UnitTestResults.trx" `
             --resultsDirectory:$testResultsDir `
             --TestAdapterPath:. `
             --settings:coverlet.runsettings
@@ -82,21 +82,37 @@ jobs:
       #       --targetargs:"demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
       #       --format:cobertura
 
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Generate HTML Report
+        run: |
+          reportgenerator `
+          -reports:TestResults/**/*.cobertura.xml `
+          -targetdir:coveragereport `
+          -reporttypes:Html
+      
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html-report
+          path: coveragereport
+
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: |
-            TestResults/**/*.cobertura.xml
+            TestResults/*/*.cobertura.xml
 
       # Upload test result files as artifacts, so they can be fetched by the reporting workflow
-      - name: Upload Test Results Artifacts
+      - name: Upload UnitTest Results Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: unittest-results
           path: TestResults/*.trx
 
-      - name: Publish Test Results
+      - name: Publish UnitTest Results
         uses: dorny/test-reporter@v2
         if: success() || failure()           # run this step even if previous step failed
         with:
