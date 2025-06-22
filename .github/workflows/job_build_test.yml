@@ -43,7 +43,7 @@ jobs:
         run: nuget restore $env:Solution_Name
 
       - name: Build Solution
-        run: msbuild $env:Solution_Name /p:Configuration=$env:Build_Configuration /p:OutputPath="bin\$env:Build_Configuration" /p:DebugSymbols=true /p:DebugType=portable
+        run: msbuild $env:Solution_Name /p:Configuration=$env:Build_Configuration /p:DebugSymbols=true /p:DebugType=portable
 
       # Optional: Run Unit Tests
       - name: Run Unit Tests
@@ -59,7 +59,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path $testResultsDir | Out-Null
 
           & "$($vstestPath.FullName)" `
-            "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
+            "demoTool.Tests\bin\$env:Build_Configuration\net48\*.Tests.dll" `
             --logger:"trx;LogFileName=TestResults.trx" `
             --resultsDirectory:$testResultsDir `
             --collect:"XPlat Code Coverage"
