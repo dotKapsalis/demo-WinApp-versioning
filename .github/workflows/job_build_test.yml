@@ -87,7 +87,7 @@ jobs:
         with:
           name: coverage-report
           path: |
-            demoTool.Tests/TestResults/**/*.cobertura.xml
+            TestResults/**/*.cobertura.xml
 
       # Upload test result files as artifacts, so they can be fetched by the reporting workflow
       - name: Upload Test Results Artifacts
