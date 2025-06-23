@@ -55,15 +55,12 @@ jobs:
             exit 1
           }
 
-          $testResultsDir = "TestResults"
-          New-Item -ItemType Directory -Force -Path $testResultsDir | Out-Null
-
           & "$($vstestPath.FullName)" `
             "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
-            --logger:"trx;LogFileName=UnitTestResults.trx" `
-            --resultsDirectory:$testResultsDir `
-            --TestAdapterPath:. `
-            --settings:coverlet.runsettings
+            /Logger:"trx;LogFileName=UnitTestResults.trx" `
+            /ResultsDirectory:"TestResults" `
+            /TestAdapterPath:. `
+            /Settings:coverlet.runsettings
 
       # Upload UnitTest Result files as artifacts, so they can be fetched by the reporting workflow
       - name: Upload UnitTest Results
