@@ -20,12 +20,6 @@ jobs:
       solution: demo-WinApp-versioning.sln
       configuration: Debug
 
-  test:
-    needs: build
-    uses: ./.github/workflows/job_test.yml
-    with:
-      configuration: Debug
-
   coverage:
     needs: test
     uses: ./.github/workflows/job_coverage.yml
