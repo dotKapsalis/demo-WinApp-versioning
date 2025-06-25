@@ -1,0 +1,39 @@
+name: Release Pipeline
+
+on:
+  push:
+    branches:
+      - release/**
+
+jobs:
+  build:
+    uses: ./.github/workflows/job_build.yml
+    with:
+      solution: demo-WinApp-versioning.sln
+      configuration: Release
+
+  test:
+    needs: build
+    uses: ./.github/workflows/job_test.yml
+    with:
+      configuration: Release
+
+  coverage:
+    needs: test
+    uses: ./.github/workflows/job_coverage.yml
+
+  package:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Zip Output
+        run: Compress-Archive -Path "bin\Release\*" -DestinationPath app-release.zip
+
+      - name: Upload Release Zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app-release.zip

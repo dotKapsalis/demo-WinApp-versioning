@@ -1,0 +1,50 @@
+name: Run Tests
+
+on:
+  workflow_call:
+    inputs:
+      configuration:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    env:
+      Build_Configuration: ${{ inputs.configuration }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Unit Tests
+        run: |
+          $vstestPath = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+
+          if (-not $vstestPath) {
+            Write-Error "vstest.console.exe NOT found"
+            exit 1
+          }
+
+          & "$($vstestPath.FullName)" `
+            "demoTool.Tests\bin\$env:Build_Configuration\*.Tests.dll" `
+            /Logger:"trx;LogFileName=UnitTestResults.trx" `
+            /ResultsDirectory:"TestResults" `
+            /TestAdapterPath:. `
+            /Settings:coverlet.runsettings
+
+      # Upload UnitTest Result files as artifacts, so they can be fetched by the reporting workflow
+      - name: Upload UnitTest Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: unittest-results
+          path: TestResults/*.trx
+
+      - name: Publish UnitTest Results
+        uses: dorny/test-reporter@v2
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: test-results          # Name of the check run which will be created
+          path: TestResults/*.trx     # Path to test results
+          reporter: dotnet-trx        # Format of test results

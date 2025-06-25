@@ -6,20 +6,26 @@ on:
       - main
       - master
       - release/**
+
   pull_request:
     branches-ignore:
       - main
       - master
       - release/**
 
-permissions:
-  contents: read
-#  actions: read
-  checks: write
-
 jobs:
   build:
-    uses: ./.github/workflows/job_build_test.yml
+    uses: ./.github/workflows/job_build.yml
     with:
       solution: demo-WinApp-versioning.sln
       configuration: Debug
+
+  test:
+    needs: build
+    uses: ./.github/workflows/job_test.yml
+    with:
+      configuration: Debug
+
+  coverage:
+    needs: test
+    uses: ./.github/workflows/job_coverage.yml
