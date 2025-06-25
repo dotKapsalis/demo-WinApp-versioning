@@ -71,7 +71,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unittest-results
-          path: TestResults/*.trx
+          path: |
+            TestResults/*.trx
+            TestResults/**/*.cobertura.xml
 
       # Publish results
       - name: Publish UnitTest Results
