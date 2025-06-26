@@ -4,15 +4,14 @@ on:
   workflow_call: {}
 
 jobs:
-  coverage:
+  generate-report:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
       # Install ReportGenerator and Generate HTML Report
       - name: Generate Coverage HTML Report
         run: |
+          Get-Childitem TestResults -Recurse
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator `
             -reports:TestResults/**/*.cobertura.xml `
