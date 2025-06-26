@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/job_build.yml
+    uses: ./.github/workflows/job_build_test.yml
     with:
       solution: demo-WinApp-versioning.sln
       configuration: Debug

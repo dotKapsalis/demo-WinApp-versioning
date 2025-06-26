@@ -24,10 +24,11 @@ jobs:
         with:
           fetch-depth: 0 # Required for GitVersion to work correctly
 
+      # Install the latest GitVersion 5.x
       - name: Install GitVersion 5.x
         uses: gittools/actions/gitversion/setup@v2.0.0
         with:
-          versionSpec: '5.x' # Install the latest GitVersion 5.x
+          versionSpec: '5.x'
 
       - name: Calculate GitVersion
         id: gitversion
@@ -41,6 +42,7 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore $env:Solution_Name
 
+      # Build Solution
       - name: Build Solution
         run: msbuild $env:Solution_Name /p:Configuration=$env:Build_Configuration /p:OutputPath="bin\$env:Build_Configuration" /p:DebugSymbols=true /p:DebugType=portable
 

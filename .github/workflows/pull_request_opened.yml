@@ -8,17 +8,11 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/job_build.yml
+    uses: ./.github/workflows/job_build_test.yml
     with:
       solution: demo-WinApp-versioning.sln
       configuration: Release
 
-  test:
-    needs: build
-    uses: ./.github/workflows/job_test.yml
-    with:
-      configuration: Release
-
-  coverage:
-    needs: test
-    uses: ./.github/workflows/job_coverage.yml
+  # coverage:
+  #   needs: test
+  #   uses: ./.github/workflows/job_coverage.yml
