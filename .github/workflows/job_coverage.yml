@@ -8,10 +8,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Run dir command
+        run: |
+          dir
+          dir TestResults
+
       # Install ReportGenerator and Generate HTML Report
       - name: Generate Coverage HTML Report
         run: |
-          Get-Childitem TestResults -Recurse
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator `
             -reports:TestResults/**/*.cobertura.xml `
