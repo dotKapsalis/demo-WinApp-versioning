@@ -8,16 +8,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Run dir command
-        run: |
-          Get-ChildItem -Path .
+      - name: Download Cobertura XML
+        uses: actions/download-artifact@v4
+        with:
+          name: unittest-results
+          path: cobertura-artifacts
 
       # Install ReportGenerator and Generate HTML Report
       - name: Generate Coverage HTML Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator `
-            -reports:TestResults/**/*.cobertura.xml `
+            -reports:cobertura-artifacts/**/*.cobertura.xml `
             -targetdir:coveragereport `
             -reporttypes:Html
 
