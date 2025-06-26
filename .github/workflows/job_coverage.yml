@@ -10,8 +10,7 @@ jobs:
     steps:
       - name: Run dir command
         run: |
-          dir
-          dir TestResults
+          Get-ChildItem -Path .
 
       # Install ReportGenerator and Generate HTML Report
       - name: Generate Coverage HTML Report
