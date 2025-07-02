@@ -86,11 +86,6 @@ jobs:
           path: TestResults/*.trx     # Path to test results
           reporter: dotnet-trx        # Format of test results
 
-      - name: Display bin
-        run: |
-          dir bin
-          dir bin\${{ env.Build_Configuration }}\
-
       - name: Upload Build Output
         if: |
           startsWith(github.ref, 'refs/heads/release/') ||
@@ -99,5 +94,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: bin\${{ env.Build_Configuration }}\
+          path: demoTool.Desktop\bin\$env:Build_Configuration\
           if-no-files-found: error
