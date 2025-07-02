@@ -1,0 +1,42 @@
+name: Run Code Coverage
+
+on:
+  workflow_call: {}
+
+jobs:
+  generate-report:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Cobertura XML
+        uses: actions/download-artifact@v4
+        with:
+          name: unittest-results
+          path: cobertura-artifacts
+
+      # Install ReportGenerator and Generate HTML Report
+      - name: Generate Coverage HTML Report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator `
+            -reports:cobertura-artifacts/**/*.cobertura.xml `
+            -targetdir:coveragereport `
+            -reporttypes:Html
+
+      # Upload Coverage HTML Report
+      - name: Upload Coverage HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html-report
+          path: coveragereport
+
+      # Optional upload the cobertura.xml
+      # - name: Upload Coverage Report
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: coverage-report
+      #     path: |
+      #       TestResults/**/*.cobertura.xml
