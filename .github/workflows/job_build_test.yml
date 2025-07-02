@@ -85,3 +85,13 @@ jobs:
           name: test-results          # Name of the check run which will be created
           path: TestResults/*.trx     # Path to test results
           reporter: dotnet-trx        # Format of test results
+
+      - name: Upload Build Output
+        if: |
+          startsWith(github.ref, 'refs/heads/release/') ||
+          github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: bin\${{ env.Build_Configuration }}\
