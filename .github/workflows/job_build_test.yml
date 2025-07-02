@@ -94,5 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: demoTool.Desktop\bin\$env:Build_Configuration\
+          path: |
+            demoTool.Desktop\bin\${{ env.Build_Configuration }}\
+            !demoTool.Desktop\bin\${{ env.Build_Configuration }}\*.pdb
           if-no-files-found: error
