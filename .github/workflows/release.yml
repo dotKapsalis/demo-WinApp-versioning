@@ -46,9 +46,11 @@ jobs:
         run: |
           echo "GitVersion: ${{ steps.gitversion.outputs.fullSemVer }}"
 
-      - name: Set
+      - name: Set ZIP Filename
         id: vars
-        run: echo "zip_name=demoWinApp-v${{ steps.gitversion.outputs.fullSemVer }}.zip" >> $GITHUB_OUTPUT
+        run: |
+          $zipName = "demoWinApp-v${{ steps.gitversion.outputs.fullSemVer }}.zip"
+          echo "zip_name=$zipName" >> $env:GITHUB_OUTPUT
 
       - name: Zip Files
         run: Compress-Archive -Path "bin\Release\*" -DestinationPath "${{ steps.vars.outputs.zip_name }}"
