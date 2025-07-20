@@ -19,6 +19,18 @@ namespace demoTool.Tests
         }
 
         [TestMethod]
+        public void ShoudDevideTwoNumbersByZero()
+        {
+            const float expected = 0;
+            const float aValue = 10;
+            const float bValue = 0;
+
+            float answer = Calculator.DivideNumbers(aValue, bValue);
+
+            Assert.AreEqual(expected, answer);
+        }
+
+        [TestMethod]
         public void Form1_HasButton1_WithCorrectDefaults()
         {
             using (var form = new Form1())
