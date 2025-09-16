@@ -17,7 +17,7 @@ namespace demoTool.Desktop
 
             button1.Click += Button1_Click;
 
-            toolStripStatusLabel1.Text = Application.ProductVersion;
+            toolStripStatusLabel1.Text = CleanProductVersion(Application.ProductVersion);
         }
 
         private async void Button1_Click(object sender, EventArgs e)
@@ -36,6 +36,15 @@ namespace demoTool.Desktop
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        string CleanProductVersion(string version)
+        {
+            if (string.IsNullOrEmpty(version))
+                return version;
+
+            var idx = version.IndexOf('+');
+            return idx > 0 ? version.Substring(0, idx) : version;
         }
     }
 }
