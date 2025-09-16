@@ -16,6 +16,8 @@ namespace demoTool.Desktop
             _dataService = new ApiDataService(new System.Net.Http.HttpClient());
 
             button1.Click += Button1_Click;
+
+            toolStripStatusLabel1.Text = Application.ProductVersion;
         }
 
         private async void Button1_Click(object sender, EventArgs e)
