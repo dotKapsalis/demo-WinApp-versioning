@@ -4,6 +4,11 @@ ignore:
 
 merge-message-formats: {}
 
+# These settings control AssemblyInfo.cs version stamping
+assembly-versioning-format: '1.0.0.0'                         # CLR binding version (fixed)
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.0'  # File version (auto bump)
+#assembly-informational-format: '{FullSemVer}'                 # ProductVersion / Application.ProductVersion
+
 branches:
   main:
     regex: ^main$|^master$
